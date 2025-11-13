@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Shield, Lock, MapPin, Users, Fuel } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { RentalDialog } from './RentalDialog';
 import { toast } from 'sonner';
 
 interface CarCardProps {
@@ -25,7 +27,18 @@ export const CarCard = ({
   fuelType,
   encrypted 
 }: CarCardProps) => {
+  const [rentalDialogOpen, setRentalDialogOpen] = useState(false);
+
   return (
+    <>
+      <RentalDialog
+        open={rentalDialogOpen}
+        onOpenChange={setRentalDialogOpen}
+        carBrand={brand}
+        carModel={model}
+        pricePerDay={price}
+        encrypted={encrypted}
+      />
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-card-hover bg-gradient-card border-border/50">
       <CardContent className="p-0">
         {/* Image Container */}
@@ -90,7 +103,7 @@ export const CarCard = ({
           <div className="flex gap-2 pt-2">
             <Button 
               className="flex-1 font-semibold transition-all hover:shadow-glow"
-              onClick={() => toast.success(`Starting rental process for ${brand} ${model}. Connect your wallet to continue.`)}
+              onClick={() => setRentalDialogOpen(true)}
             >
               Rent Now
             </Button>
@@ -115,5 +128,6 @@ export const CarCard = ({
         </div>
       </CardContent>
     </Card>
+    </>
   );
 };
