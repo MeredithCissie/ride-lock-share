@@ -75,7 +75,7 @@ export const RentalDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl">
             {step === 'dates' ? 'Select Rental Dates' : 'Confirm Your Rental'}
@@ -87,117 +87,119 @@ export const RentalDialog = ({
           </DialogDescription>
         </DialogHeader>
 
-        {!isConnected ? (
-          <div className="py-8 space-y-4">
-            <div className="flex flex-col items-center gap-4 p-6 bg-muted/50 rounded-lg border border-border">
-              <Wallet className="w-12 h-12 text-muted-foreground" />
-              <p className="text-center text-muted-foreground">
-                Please connect your wallet to continue with the rental
-              </p>
-              <ConnectButton />
-            </div>
-          </div>
-        ) : (
-          <>
-            {step === 'dates' && (
-              <div className="space-y-6 py-4">
-                <div className="space-y-3">
-                  <Label className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    Start Date
-                  </Label>
-                  <CalendarComponent
-                    mode="single"
-                    selected={startDate}
-                    onSelect={setStartDate}
-                    disabled={(date) => date < new Date()}
-                    className="rounded-md border"
-                  />
-                </div>
-
-                <div className="space-y-3">
-                  <Label className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    End Date
-                  </Label>
-                  <CalendarComponent
-                    mode="single"
-                    selected={endDate}
-                    onSelect={setEndDate}
-                    disabled={(date) => !startDate || date < startDate}
-                    className="rounded-md border"
-                  />
-                </div>
-
-                {encrypted && (
-                  <div className="flex items-center gap-2 p-3 bg-encrypted-light/20 border border-encrypted-light/30 rounded-lg">
-                    <Shield className="w-4 h-4 text-encrypted shrink-0" />
-                    <p className="text-xs text-muted-foreground">
-                      All rental information will be encrypted and protected
-                    </p>
-                  </div>
-                )}
+        <div className="overflow-y-auto flex-1 pr-2">
+          {!isConnected ? (
+            <div className="py-8 space-y-4">
+              <div className="flex flex-col items-center gap-4 p-6 bg-muted/50 rounded-lg border border-border">
+                <Wallet className="w-12 h-12 text-muted-foreground" />
+                <p className="text-center text-muted-foreground">
+                  Please connect your wallet to continue with the rental
+                </p>
+                <ConnectButton />
               </div>
-            )}
+            </div>
+          ) : (
+            <>
+              {step === 'dates' && (
+                <div className="space-y-6 py-4">
+                  <div className="space-y-3">
+                    <Label className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      Start Date
+                    </Label>
+                    <CalendarComponent
+                      mode="single"
+                      selected={startDate}
+                      onSelect={setStartDate}
+                      disabled={(date) => date < new Date()}
+                      className="rounded-md border"
+                    />
+                  </div>
 
-            {step === 'confirm' && (
-              <div className="space-y-6 py-4">
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Vehicle</span>
-                    <span className="font-semibold">{carBrand} {carModel}</span>
+                  <div className="space-y-3">
+                    <Label className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      End Date
+                    </Label>
+                    <CalendarComponent
+                      mode="single"
+                      selected={endDate}
+                      onSelect={setEndDate}
+                      disabled={(date) => !startDate || date < startDate}
+                      className="rounded-md border"
+                    />
                   </div>
-                  <Separator />
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Start Date</span>
-                    <span className="font-medium">{startDate?.toLocaleDateString()}</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">End Date</span>
-                    <span className="font-medium">{endDate?.toLocaleDateString()}</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      Duration
-                    </span>
-                    <span className="font-medium">{calculateDays()} days</span>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Price per day</span>
-                    <span className="font-medium">${pricePerDay}</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center text-lg">
-                    <span className="font-semibold">Total Price</span>
-                    <span className="font-bold text-primary">${totalPrice.toFixed(2)}</span>
-                  </div>
-                </div>
 
-                {encrypted && (
-                  <div className="flex items-start gap-3 p-4 bg-encrypted-light/20 border border-encrypted-light/30 rounded-lg">
-                    <Shield className="w-5 h-5 text-encrypted shrink-0 mt-0.5" />
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium">Encrypted Protection Active</p>
+                  {encrypted && (
+                    <div className="flex items-center gap-2 p-3 bg-encrypted-light/20 border border-encrypted-light/30 rounded-lg">
+                      <Shield className="w-4 h-4 text-encrypted shrink-0" />
                       <p className="text-xs text-muted-foreground">
-                        Your rental agreement, driving records, and personal information will be encrypted and stored securely on the blockchain
+                        All rental information will be encrypted and protected
                       </p>
                     </div>
+                  )}
+                </div>
+              )}
+
+              {step === 'confirm' && (
+                <div className="space-y-6 py-4">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Vehicle</span>
+                      <span className="font-semibold">{carBrand} {carModel}</span>
+                    </div>
+                    <Separator />
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Start Date</span>
+                      <span className="font-medium">{startDate?.toLocaleDateString()}</span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">End Date</span>
+                      <span className="font-medium">{endDate?.toLocaleDateString()}</span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        Duration
+                      </span>
+                      <span className="font-medium">{calculateDays()} days</span>
+                    </div>
+                    
+                    <Separator />
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Price per day</span>
+                      <span className="font-medium">${pricePerDay}</span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center text-lg">
+                      <span className="font-semibold">Total Price</span>
+                      <span className="font-bold text-primary">${totalPrice.toFixed(2)}</span>
+                    </div>
                   </div>
-                )}
-              </div>
-            )}
-          </>
-        )}
+
+                  {encrypted && (
+                    <div className="flex items-start gap-3 p-4 bg-encrypted-light/20 border border-encrypted-light/30 rounded-lg">
+                      <Shield className="w-5 h-5 text-encrypted shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">Encrypted Protection Active</p>
+                        <p className="text-xs text-muted-foreground">
+                          Your rental agreement, driving records, and personal information will be encrypted and stored securely on the blockchain
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+        </div>
 
         {isConnected && (
-          <DialogFooter className="gap-2">
+          <DialogFooter className="gap-2 pt-4 border-t">
             {step === 'confirm' && (
               <Button variant="outline" onClick={handleBack}>
                 Back
