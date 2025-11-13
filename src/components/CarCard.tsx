@@ -2,6 +2,7 @@ import { Shield, Lock, MapPin, Users, Fuel } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 
 interface CarCardProps {
   image: string;
@@ -89,12 +90,14 @@ export const CarCard = ({
           <div className="flex gap-2 pt-2">
             <Button 
               className="flex-1 font-semibold transition-all hover:shadow-glow"
+              onClick={() => toast.success(`Starting rental process for ${brand} ${model}. Connect your wallet to continue.`)}
             >
               Rent Now
             </Button>
             <Button 
               variant="outline"
               className="flex-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground font-semibold transition-all"
+              onClick={() => toast.info(`Viewing details for ${brand} ${model}. ${encrypted ? 'All data is encrypted and secure.' : ''}`)}
             >
               View Details
             </Button>

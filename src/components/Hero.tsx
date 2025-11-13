@@ -1,5 +1,6 @@
 import { Shield, Lock, Key } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 import heroBg from '@/assets/hero-bg.jpg';
 
 export const Hero = () => {
@@ -80,6 +81,7 @@ export const Hero = () => {
               size="lg"
               variant="hero"
               className="px-8 py-6 text-lg"
+              onClick={() => toast.info('Learn more about our end-to-end encrypted car sharing platform and how we protect your privacy.')}
             >
               Learn More
             </Button>
